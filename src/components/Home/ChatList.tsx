@@ -1,19 +1,20 @@
-import { UserOutlined } from "@ant-design/icons";
 import { Avatar } from "antd";
 
-const ChatList = () => {
+const ChatList = ({
+  data,
+}: {
+  data: { name: string; img: string; message: string; time: string };
+}) => {
   return (
-    <div className="flex gap-4 mb-4">
-      <div className="w-[20%] ">
-        <Avatar shape="square" size={64} icon={<UserOutlined />} />
+    <div className="flex gap-4 mb-4 hover:bg-gray-200 cursor-pointer">
+      <div className="w-[15%] ">
+        <Avatar shape="square" size={48} src={data?.img} />
       </div>
-      <div className="w-[80%]  mr-4">
-        <h2 className="text-lg font-semibold text-gray-700">
-          Jasmine Thompson
-        </h2>
-        <div className="flex gap-2 text-gray-500">
-          <p>Had they visited Rome before</p>
-          <p>~ 45 min</p>
+      <div className="w-[85%]  mr-4">
+        <h2 className="text-base font-semibold text-gray-700">{data?.name}</h2>
+        <div className="flex gap-2 text-xs text-gray-500">
+          <p>{data?.message}</p>
+          <p>~ {data?.time}</p>
         </div>
       </div>
     </div>

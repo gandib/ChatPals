@@ -12,7 +12,7 @@ const Home = () => {
         </div>
 
         {/* content  */}
-        <div className="col-span-2 border-x border-x-blue-300  ">
+        <div className="col-span-2">
           <Content />
         </div>
 

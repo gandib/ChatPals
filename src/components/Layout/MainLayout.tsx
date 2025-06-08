@@ -1,7 +1,7 @@
 import { AppstoreTwoTone, MessageTwoTone } from "@ant-design/icons";
 import { type MenuProps, Button, Layout, Menu } from "antd";
 import { Link, Outlet } from "react-router";
-const { Header, Content } = Layout;
+const { Content } = Layout;
 
 const MainLayout = () => {
   const user = { role: "user", email: "gandib@gmail.com" };
@@ -11,7 +11,7 @@ const MainLayout = () => {
       label: (
         <Link to="/">
           <MessageTwoTone
-            style={{ fontSize: "28px", marginRight: "2px", paddingTop: "20px" }}
+            style={{ fontSize: "28px", marginRight: "2px", paddingTop: "16px" }}
           />
         </Link>
       ),
@@ -21,7 +21,7 @@ const MainLayout = () => {
       label: (
         <Link to={`${user?.role}/dashboard`}>
           <AppstoreTwoTone
-            style={{ fontSize: "28px", marginRight: "2px", paddingTop: "20px" }}
+            style={{ fontSize: "28px", marginRight: "2px", paddingTop: "16px" }}
           />
         </Link>
       ),
@@ -29,17 +29,13 @@ const MainLayout = () => {
   ];
 
   return (
-    <Layout className="mx-0" style={{ minHeight: "90vh", position: "fixed" }}>
-      <Layout>
-        <Header
-          style={{
-            display: "flex",
-            backgroundColor: "white",
-            padding: "16px",
-            alignItems: "center",
-          }}
-        >
-          <div className="border-r-1 border-blue-300 pr-8 flex items-center">
+    <div
+      className="mx-0 top-0 right-0 left-0 fixed"
+      style={{ minHeight: "90vh" }}
+    >
+      <div>
+        <div className="flex bg-white p-1 items-center border border-t-0 border-x-0 border-b-gray-200">
+          <div className="border-r-1 border-blue-300 pr-8 flex items-center px-4">
             <h1 className="text-xl font-bold cursor-pointer text-blue-500">
               ChatPals
             </h1>
@@ -61,6 +57,7 @@ const MainLayout = () => {
               minWidth: 0,
               fontSize: "18px",
               marginLeft: "20px",
+              border: 0,
             }}
           />
           <div>
@@ -77,7 +74,7 @@ const MainLayout = () => {
               </Button>
             )}
           </div>
-        </Header>
+        </div>
         <Content style={{ margin: "0px 16px 0" }}>
           <div
           // style={{
@@ -88,8 +85,8 @@ const MainLayout = () => {
             <Outlet />
           </div>
         </Content>
-      </Layout>
-    </Layout>
+      </div>
+    </div>
   );
 };
 

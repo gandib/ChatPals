@@ -1,15 +1,24 @@
+import ContentBody from "./ContentBody";
+import ContentFooter from "./ContentFooter";
+import ContentHeader from "./ContentHeader";
+
 const Content = () => {
   return (
     <div>
       {/* header  */}
-      <p>content</p>
-      <div></div>
+      <div>
+        <ContentHeader />
+      </div>
 
       {/* body  */}
-      <div></div>
+      <div>
+        <ContentBody />
+      </div>
 
       {/* footer  */}
-      <div></div>
+      <div>
+        <ContentFooter />
+      </div>
     </div>
   );
 };
