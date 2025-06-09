@@ -1,10 +1,26 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AppstoreTwoTone, MessageTwoTone } from "@ant-design/icons";
 import { type MenuProps, Button, Layout, Menu } from "antd";
-import { Link, Outlet } from "react-router";
+import { Link, Outlet, useLocation, useNavigate } from "react-router";
+import { getCurrentUser, logout } from "../../services/AuthService";
+import { useEffect, useState } from "react";
 const { Content } = Layout;
 
 const MainLayout = () => {
-  const user = { role: "user", email: "gandib@gmail.com" };
+  // const user = { role: "user", email: "gandib@gmail.com" };
+  const [user, setUser] = useState<any>(null);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const data = await getCurrentUser();
+      setUser(data);
+    };
+    fetchUser();
+  }, [location.pathname]);
+
+  console.log(user);
   const items1: MenuProps["items"] = [
     {
       key: "Home",
@@ -29,10 +45,7 @@ const MainLayout = () => {
   ];
 
   return (
-    <div
-      className="mx-0 top-0 right-0 left-0 fixed"
-      style={{ minHeight: "90vh" }}
-    >
+    <div className="">
       <div>
         <div className="flex bg-white p-1 items-center border border-t-0 border-x-0 border-b-gray-200">
           <div className="border-r-1 border-blue-300 pr-8 flex items-center px-4">
@@ -63,7 +76,11 @@ const MainLayout = () => {
           <div>
             {user && user.email ? (
               <Button
-                // onClick={handleLogout}
+                onClick={() => {
+                  logout();
+                  setUser(null);
+                  navigate("/login");
+                }}
                 style={{ fontWeight: "bold", fontSize: "18px" }}
               >
                 Logout

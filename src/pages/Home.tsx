@@ -4,7 +4,7 @@ import RightSidebar from "../components/Home/RightSidebar";
 
 const Home = () => {
   return (
-    <div className="">
+    <div className="mx-0 top-16 right-0 left-0 fixed min-h-[90vh]">
       <div className="grid grid-cols-4">
         {/* left sidebar */}
         <div className="col-span-1 ">
