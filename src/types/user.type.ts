@@ -6,4 +6,6 @@ export interface IUser {
   status: "blocked" | "unblocked";
   image: string;
   bio: string;
+  iat: number;
+  exp: number;
 }

@@ -4,21 +4,18 @@ import { type FieldValues } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import CPForm from "../components/form/CPForm";
 import CPInput from "../components/form/CPInput";
-import { useUserRegistration } from "../hooks/auth.hooks";
-import { useEffect, useState, type ChangeEvent } from "react";
+import { useState, type ChangeEvent } from "react";
 import { toast } from "sonner";
+import authApi from "../redux/features/auth/authApi";
 
 const Register = () => {
   const navigate = useNavigate();
+  const [signup] = authApi.useSignupMutation();
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
   const [imagePreviews, setImagePreviews] = useState<string[] | []>([]);
-  const {
-    mutate: handleUserRagistration,
-    isPending,
-    isSuccess,
-  } = useUserRegistration();
 
-  const onSubmit = (data: FieldValues) => {
+  const onSubmit = async (data: FieldValues) => {
+    const toastId = toast.loading("Registering...");
     const formData = new FormData();
     const userData = {
       ...data,
@@ -31,7 +28,17 @@ const Register = () => {
 
     formData.append("file", imageFiles[0]);
 
-    handleUserRagistration(formData);
+    try {
+      const res = await signup(formData).unwrap();
+
+      toast.success(res.message, { id: toastId, duration: 2000 });
+
+      if (res?.data?.email) {
+        navigate(`/login`);
+      }
+    } catch (error: any) {
+      toast.error(error?.data?.message, { id: toastId, duration: 2000 });
+    }
   };
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -50,20 +57,6 @@ const Register = () => {
     }
   };
 
-  if (isPending) {
-    //handle loading state
-  }
-
-  useEffect(() => {
-    if (isSuccess) {
-      toast.success("User registration successful!");
-    }
-
-    if (!isPending && isSuccess) {
-      toast("User registration success!");
-      navigate("/");
-    }
-  }, [isPending, isSuccess, navigate]);
   return (
     <Row justify="center" align="middle" style={{ height: "100vh" }}>
       <Col span={20}>

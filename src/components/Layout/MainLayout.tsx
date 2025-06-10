@@ -1,24 +1,30 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AppstoreTwoTone, MessageTwoTone } from "@ant-design/icons";
 import { type MenuProps, Button, Layout, Menu } from "antd";
-import { Link, Outlet, useLocation, useNavigate } from "react-router";
-import { getCurrentUser, logout } from "../../services/AuthService";
-import { useEffect, useState } from "react";
+import { Link, Outlet, useNavigate } from "react-router";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { logout, selectCurrentUser } from "../../redux/features/auth/authSlice";
+import { baseApi } from "../../redux/api/baseApi";
 const { Content } = Layout;
 
 const MainLayout = () => {
-  // const user = { role: "user", email: "gandib@gmail.com" };
-  const [user, setUser] = useState<any>(null);
-  const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectCurrentUser);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const data = await getCurrentUser();
-      setUser(data);
-    };
-    fetchUser();
-  }, [location.pathname]);
+  const handleLogout = () => {
+    dispatch(logout());
+    dispatch(baseApi.util.resetApiState());
+    navigate("/login");
+  };
+
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     const data = await getCurrentUser();
+  //     setUser(data);
+  //   };
+  //   fetchUser();
+  // }, [location.pathname]);
 
   console.log(user);
   const items1: MenuProps["items"] = [
@@ -76,11 +82,7 @@ const MainLayout = () => {
           <div>
             {user && user.email ? (
               <Button
-                onClick={() => {
-                  logout();
-                  setUser(null);
-                  navigate("/login");
-                }}
+                onClick={handleLogout}
                 style={{ fontWeight: "bold", fontSize: "18px" }}
               >
                 Logout

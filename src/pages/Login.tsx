@@ -5,32 +5,35 @@ import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
 import CPForm from "../components/form/CPForm";
 import CPInput from "../components/form/CPInput";
-import { useUserlogin } from "../hooks/auth.hooks";
-import { useEffect } from "react";
+import { useAppDispatch } from "../redux/hooks";
+import authApi from "../redux/features/auth/authApi";
+import type { IUser } from "../types";
+import { verifyToken } from "../utils/verifyToken";
+import { setUser } from "../redux/features/auth/authSlice";
 
 const Login = () => {
   const navigate = useNavigate();
   //   const { register } = useForm();
 
-  const { mutate: login, isPending, isSuccess } = useUserlogin();
+  const dispatch = useAppDispatch();
+
+  const [login] = authApi.useLoginMutation();
 
   const onSubmit = async (data: FieldValues) => {
-    const toastId = toast.loading("Logging...");
+    const toastId = toast.loading("Logging in.");
 
     try {
-      login(data);
-
+      const res = await login(data).unwrap();
+      const user = verifyToken(res.token) as IUser;
+      console.log({ user, res });
+      dispatch(setUser({ user: user, token: res.token }));
       toast.success("Logged in successfully!", { id: toastId, duration: 2000 });
+
+      navigate(`/`);
     } catch (error: any) {
       toast.error(error?.data?.message, { id: toastId, duration: 2000 });
     }
   };
-
-  useEffect(() => {
-    if (!isPending && isSuccess) {
-      navigate("/");
-    }
-  }, [isPending, isSuccess, navigate]);
 
   return (
     <Row justify="center" align="middle" style={{ height: "100vh" }}>
