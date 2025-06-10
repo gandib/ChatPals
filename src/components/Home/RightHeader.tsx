@@ -1,6 +1,9 @@
 import { Avatar } from "antd";
+import { useAppSelector } from "../../redux/hooks";
+import { getReceiverUser } from "../../redux/features/user/userSlice";
 
 const RightHeader = () => {
+  const userData = useAppSelector(getReceiverUser);
   return (
     <div>
       <div>
@@ -14,13 +17,13 @@ const RightHeader = () => {
           shape="square"
           size={64}
           style={{ border: "2px solid white" }}
-          src="https://connectme-html.themeyn.com/images/avatar/1.jpg"
+          src={userData?.image}
         />
       </div>
 
       <div className="p-4">
         <h1 className="flex justify-center text-lg text-gray-600 font-semibold">
-          Konstantin Frank
+          {userData?.name}
         </h1>
         <p className="flex justify-center text-xs text-gray-500 mt-1">
           Active Now

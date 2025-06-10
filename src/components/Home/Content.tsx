@@ -6,32 +6,24 @@ import { useEffect, useState } from "react";
 import socket from "../../socket";
 import axios from "axios";
 import type { IMessage } from "../../types";
-import { getCurrentUser } from "../../services/AuthService";
+import { useAppSelector } from "../../redux/hooks";
+import { selectCurrentUser } from "../../redux/features/auth/authSlice";
+import { getReceiverUser } from "../../redux/features/user/userSlice";
 
-const Content = ({ receiverId }: { receiverId: string }) => {
-  const [user, setUser] = useState<any>(null);
-  const receiver = { _id: "6846e887b56514124cc9fe44" };
-  // const roomId = [user?._id, receiver._id].sort().join("_");
-  const roomId = "6846e79b55e3e0d3e3b07ef6_6846e887b56514124cc9fe44";
+const Content = () => {
+  const user = useAppSelector(selectCurrentUser);
+  const receiver = useAppSelector(getReceiverUser);
+  const roomId = [user?._id, receiver?._id].sort().join("_");
+  // const roomId = "6846e79b55e3e0d3e3b07ef6_6846e887b56514124cc9fe44";
   // console.log(roomId);
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [text, setText] = useState("");
 
-  console.log(receiverId);
-
   useEffect(() => {
-    const fetchUser = async () => {
-      const data = await getCurrentUser();
-      setUser(data);
-    };
-    fetchUser();
-  }, []);
+    if (!user && !receiver) return;
 
-  useEffect(() => {
-    if (!user) return;
-
-    // const roomId = [user._id, receiver._id].sort().join("_");
-    const roomId = "6846e79b55e3e0d3e3b07ef6_6846e887b56514124cc9fe44";
+    const roomId = [user?._id, receiver?._id].sort().join("_");
+    // const roomId = "6846e79b55e3e0d3e3b07ef6_6846e887b56514124cc9fe44";
     console.log(roomId);
     socket.emit("joinRoom", roomId);
 
@@ -69,7 +61,7 @@ const Content = ({ receiverId }: { receiverId: string }) => {
     <div>
       {/* header  */}
       <div>
-        <ContentHeader receiverId={receiverId} />
+        <ContentHeader />
       </div>
 
       {/* body  */}

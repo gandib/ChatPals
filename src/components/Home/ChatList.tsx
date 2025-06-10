@@ -1,8 +1,9 @@
 import { Avatar } from "antd";
+import { useAppDispatch } from "../../redux/hooks";
+import { setReceiverUser } from "../../redux/features/user/userSlice";
 
 const ChatList = ({
   data,
-  setReceiverId,
 }: {
   data: {
     _id: string;
@@ -11,11 +12,11 @@ const ChatList = ({
     message: string;
     time: string;
   };
-  setReceiverId: React.Dispatch<React.SetStateAction<string>>;
 }) => {
+  const dispatch = useAppDispatch();
   return (
     <div
-      onClick={() => setReceiverId(data?._id)}
+      onClick={() => dispatch(setReceiverUser(data))}
       className="flex gap-4 mb-4 hover:bg-gray-200 cursor-pointer"
     >
       <div className="w-[15%] ">

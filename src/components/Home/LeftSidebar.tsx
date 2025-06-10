@@ -3,8 +3,9 @@ import { Input } from "antd";
 import ChatList from "./ChatList";
 import { useState } from "react";
 import { useDebounce } from "../../utils/debounce";
-import { useGetUser } from "../../hooks/user.hooks";
 import { toast } from "sonner";
+import userApi from "../../redux/features/user/userApi";
+import type { TError } from "../../types";
 
 const data = [
   {
@@ -86,26 +87,20 @@ const data = [
   },
 ];
 
-const LeftSidebar = ({
-  setReceiverId,
-}: {
-  setReceiverId: React.Dispatch<React.SetStateAction<string>>;
-}) => {
+const LeftSidebar = () => {
   const isValidEmail = (email: string) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const [email, setEmail] = useState("");
   const debouncedEmail = useDebounce(email, 500);
-  const isValid = isValidEmail(debouncedEmail);
 
-  // Calling custom hook only if the debounced email is valid
-  const {
-    data: userData,
-    isLoading,
-    error,
-  } = useGetUser(isValidEmail(debouncedEmail) ? debouncedEmail : "", isValid);
+  const { data: userData, error } = userApi.useGetUserQuery(debouncedEmail, {
+    skip: !isValidEmail(debouncedEmail),
+  });
+
   if (error) {
-    toast.error(error.message);
+    const errorMessage = String((error as TError).data?.message);
+    toast.error(errorMessage);
   }
   console.log(email, userData);
   return (
@@ -125,21 +120,11 @@ const LeftSidebar = ({
 
       {/* Scrollable ChatList */}
       <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-2 mb-10">
-        {userData && (
-          <ChatList
-            key={userData?.data?._id}
-            data={userData?.data}
-            setReceiverId={setReceiverId}
-          />
+        {isValidEmail(debouncedEmail) && userData && (
+          <ChatList key={userData?.data?._id} data={userData?.data} />
         )}
-        {!userData &&
-          data?.map((chat) => (
-            <ChatList
-              key={chat._id}
-              data={chat}
-              setReceiverId={setReceiverId}
-            />
-          ))}
+        {!isValidEmail(debouncedEmail) &&
+          data?.map((chat) => <ChatList key={chat._id} data={chat} />)}
       </div>
     </div>
   );
