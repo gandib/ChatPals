@@ -6,6 +6,7 @@ import { useDebounce } from "../../utils/debounce";
 import { toast } from "sonner";
 import userApi from "../../redux/features/user/userApi";
 import type { TError } from "../../types";
+import messageApi from "../../redux/features/message/messageApi";
 
 const data = [
   {
@@ -97,6 +98,11 @@ const LeftSidebar = () => {
   const { data: userData, error } = userApi.useGetUserQuery(debouncedEmail, {
     skip: !isValidEmail(debouncedEmail),
   });
+
+  const { data: mutualConnections } = messageApi.useGetMutualConnectionsQuery(
+    []
+  );
+  console.log(mutualConnections);
 
   if (error) {
     const errorMessage = String((error as TError).data?.message);
