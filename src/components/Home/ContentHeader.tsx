@@ -1,6 +1,7 @@
 import { Avatar } from "antd";
 
-const ContentHeader = () => {
+const ContentHeader = ({ receiverId }: { receiverId: string }) => {
+  console.log({ receiverId });
   return (
     <div className="flex gap-2 justify-start p-6 bg-white border-x border-x-gray-200 border-t border-t-gray-200">
       <div className="w-[8%] ">

@@ -2,13 +2,24 @@ import { Avatar } from "antd";
 
 const ChatList = ({
   data,
+  setReceiverId,
 }: {
-  data: { name: string; img: string; message: string; time: string };
+  data: {
+    _id: string;
+    name: string;
+    image: string;
+    message: string;
+    time: string;
+  };
+  setReceiverId: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   return (
-    <div className="flex gap-4 mb-4 hover:bg-gray-200 cursor-pointer">
+    <div
+      onClick={() => setReceiverId(data?._id)}
+      className="flex gap-4 mb-4 hover:bg-gray-200 cursor-pointer"
+    >
       <div className="w-[15%] ">
-        <Avatar shape="square" size={48} src={data?.img} />
+        <Avatar shape="square" size={48} src={data?.image} />
       </div>
       <div className="w-[85%]  mr-4">
         <h2 className="text-base font-semibold text-gray-700">{data?.name}</h2>

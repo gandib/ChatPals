@@ -8,7 +8,7 @@ import axios from "axios";
 import type { IMessage } from "../../types";
 import { getCurrentUser } from "../../services/AuthService";
 
-const Content = () => {
+const Content = ({ receiverId }: { receiverId: string }) => {
   const [user, setUser] = useState<any>(null);
   const receiver = { _id: "6846e887b56514124cc9fe44" };
   // const roomId = [user?._id, receiver._id].sort().join("_");
@@ -16,6 +16,8 @@ const Content = () => {
   // console.log(roomId);
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [text, setText] = useState("");
+
+  console.log(receiverId);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -35,9 +37,8 @@ const Content = () => {
 
     const getMessages = async () => {
       const res = await axios.get(
-        `http://localhost:5000/api/message/${roomId}`
+        `${import.meta.env.VITE_BASE_API}/api/message/${roomId}`
       );
-      console.log(res);
       setMessages(res.data);
     };
     getMessages();
@@ -68,7 +69,7 @@ const Content = () => {
     <div>
       {/* header  */}
       <div>
-        <ContentHeader />
+        <ContentHeader receiverId={receiverId} />
       </div>
 
       {/* body  */}
