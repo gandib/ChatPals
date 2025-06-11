@@ -4,7 +4,13 @@ import { getUserChat } from "../../redux/features/message/messageSlice";
 import { selectCurrentUser } from "../../redux/features/auth/authSlice";
 import moment from "moment";
 
-const ContentBody = () => {
+const ContentBody = ({
+  imageFile,
+  setImageFile,
+}: {
+  imageFile: File | undefined;
+  setImageFile: React.Dispatch<React.SetStateAction<File | undefined>>;
+}) => {
   const chatData = useAppSelector(getUserChat);
   const currentUser = useAppSelector(selectCurrentUser);
 
@@ -29,12 +35,9 @@ const ContentBody = () => {
         ?.filter((chat): chat is typeof chat => !!chat)
         .map((chat) => {
           const isSender = chat.sender?._id === currentUser?._id;
-          const messageDate = chat.createdAt;
-          const shouldShowDate = isNewDate(
-            messageDate as unknown as string,
-            lastDate
-          );
-          lastDate = messageDate as unknown as string;
+          const messageDate = chat.createdAt as unknown as string;
+          const shouldShowDate = isNewDate(messageDate, lastDate);
+          lastDate = messageDate;
 
           return (
             <div key={chat._id}>
@@ -61,9 +64,22 @@ const ContentBody = () => {
                     isSender ? "bg-blue-600" : "bg-gray-500"
                   }`}
                 >
-                  <div className="flex justify-between gap-4 items-end">
-                    <p className="break-words">{chat.message}</p>
-                    <span className="text-[10px] text-gray-200 min-w-[40px]">
+                  <div className="flex flex-col gap-1">
+                    {/* Show image if exists */}
+                    {chat.image && (
+                      <img
+                        src={chat.image}
+                        alt="sent-media"
+                        className="rounded-md max-w-[200px] max-h-[200px] object-cover"
+                      />
+                    )}
+
+                    {/* Show message if exists */}
+                    {chat.message && (
+                      <p className="break-words">{chat.message}</p>
+                    )}
+
+                    <span className="text-[10px] text-gray-200 text-right">
                       {moment(chat.createdAt).format("h:mm A")}
                     </span>
                   </div>
@@ -74,6 +90,24 @@ const ContentBody = () => {
         })}
 
       <div ref={bottomRef} />
+
+      {imageFile && (
+        <div className="flex justify-start px-4 py-2">
+          <div className="relative w-32 h-32">
+            <img
+              src={URL.createObjectURL(imageFile)}
+              alt="preview"
+              className="rounded-lg shadow-md object-cover w-full h-full"
+            />
+            <button
+              className="absolute top-1 right-1 bg-white rounded-full p-1 text-xs shadow-md"
+              onClick={() => setImageFile(undefined)}
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

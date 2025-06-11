@@ -54,7 +54,8 @@ export type TUserChat = {
 
 export type TChat = {
   _id: string;
-  message: string;
+  message?: string;
+  image?: string;
   roomId: string;
   sender: IUser;
   receiver: IUser;

@@ -22,6 +22,7 @@ const Content = () => {
   const roomId = [user?._id, receiver?._id].sort().join("_");
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [text, setText] = useState("");
+  const [imageFile, setImageFile] = useState<File>();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -49,13 +50,28 @@ const Content = () => {
   }, [user, receiver]);
 
   const sendMessage = () => {
-    socket.emit("sendMessage", {
-      message: text,
+    const payload: any = {
+      message: text.trim() || undefined,
       sender: user?._id,
       receiver: receiver?._id,
       roomId,
-    });
+    };
+
+    if (imageFile) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        payload.image = reader.result;
+        socket.emit("sendMessage", payload);
+      };
+      reader.readAsDataURL(imageFile);
+    } else {
+      if (payload.message) {
+        socket.emit("sendMessage", payload);
+      }
+    }
+
     setText("");
+    setImageFile(undefined);
   };
 
   useEffect(() => {
@@ -76,7 +92,7 @@ const Content = () => {
 
       {/* body  */}
       <div>
-        <ContentBody />
+        <ContentBody imageFile={imageFile!} setImageFile={setImageFile} />
       </div>
 
       {/* footer  */}
@@ -85,6 +101,8 @@ const Content = () => {
           setText={setText}
           text={text}
           sendMessage={sendMessage}
+          imageFile={imageFile}
+          setImageFile={setImageFile}
         />
       </div>
     </div>

@@ -26,8 +26,8 @@ const ChatList = ({ data }: { data: TUserChat }) => {
           <p>
             {data &&
               data?.chats &&
-              data?.chats[data?.chats?.length - 1]?.message.slice(0, 30)}{" "}
-            {data?.chats[data?.chats?.length - 1]?.message?.length > 30
+              data?.chats[data?.chats?.length - 1]?.message!.slice(0, 30)}{" "}
+            {data?.chats[data?.chats?.length - 1]?.message!.length > 30
               ? "..."
               : ""}
           </p>
