@@ -1,12 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Input } from "antd";
 import ChatList from "./ChatList";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDebounce } from "../../utils/debounce";
 import { toast } from "sonner";
 import userApi from "../../redux/features/user/userApi";
 import type { TError } from "../../types";
 import messageApi from "../../redux/features/message/messageApi";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import {
+  getUserChat,
+  setUserChat,
+} from "../../redux/features/message/messageSlice";
 
 const data = [
   {
@@ -94,21 +100,30 @@ const LeftSidebar = () => {
 
   const [email, setEmail] = useState("");
   const debouncedEmail = useDebounce(email, 500);
+  const dispatch = useAppDispatch();
+  const mutualUser = useAppSelector(getUserChat);
 
   const { data: userData, error } = userApi.useGetUserQuery(debouncedEmail, {
     skip: !isValidEmail(debouncedEmail),
   });
 
   const { data: mutualConnections } = messageApi.useGetMutualConnectionsQuery(
-    []
+    [],
+    {
+      refetchOnMountOrArgChange: true,
+    }
   );
   console.log(mutualConnections);
+
+  useEffect(() => {
+    dispatch(setUserChat(mutualConnections?.data?.connections[0]));
+  }, [mutualConnections, dispatch]);
 
   if (error) {
     const errorMessage = String((error as TError).data?.message);
     toast.error(errorMessage);
   }
-  console.log(email, userData);
+
   return (
     <div className="flex flex-col h-screen">
       {/* Header */}
@@ -130,7 +145,9 @@ const LeftSidebar = () => {
           <ChatList key={userData?.data?._id} data={userData?.data} />
         )}
         {!isValidEmail(debouncedEmail) &&
-          data?.map((chat) => <ChatList key={chat._id} data={chat} />)}
+          mutualConnections?.data?.connections?.map((mutualUsers: any) => (
+            <ChatList key={mutualUsers._id} data={mutualUsers} />
+          ))}
       </div>
     </div>
   );

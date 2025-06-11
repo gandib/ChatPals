@@ -44,3 +44,20 @@ export type TQueryParam = {
   name: string;
   value: boolean | React.Key;
 };
+
+export type TUserChat = {
+  _id: string;
+  name: string;
+  image: string;
+  chats: TChat[];
+};
+
+export type TChat = {
+  _id: string;
+  message: string;
+  roomId: string;
+  sender: IUser;
+  receiver: IUser;
+  createdAt: Date;
+  updatedAt: Date;
+};

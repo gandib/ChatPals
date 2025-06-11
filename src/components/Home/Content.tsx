@@ -6,18 +6,25 @@ import { useEffect, useState } from "react";
 import socket from "../../socket";
 import axios from "axios";
 import type { IMessage } from "../../types";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectCurrentUser } from "../../redux/features/auth/authSlice";
 import { getReceiverUser } from "../../redux/features/user/userSlice";
+import {
+  getUserChat,
+  setChat,
+} from "../../redux/features/message/messageSlice";
+import messageApi from "../../redux/features/message/messageApi";
 
 const Content = () => {
   const user = useAppSelector(selectCurrentUser);
-  const receiver = useAppSelector(getReceiverUser);
+  const mutualUser = useAppSelector(getUserChat);
+  const receiver = useAppSelector(getReceiverUser) || mutualUser;
   const roomId = [user?._id, receiver?._id].sort().join("_");
   // const roomId = "6846e79b55e3e0d3e3b07ef6_6846e887b56514124cc9fe44";
   // console.log(roomId);
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [text, setText] = useState("");
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (!user && !receiver) return;
@@ -54,6 +61,13 @@ const Content = () => {
     });
     setText("");
   };
+
+  useEffect(() => {
+    if (messages) {
+      dispatch(setChat(messages[messages?.length - 1]));
+      dispatch(messageApi.util.invalidateTags(["message"]));
+    }
+  }, [messages, dispatch]);
 
   console.log(messages);
 

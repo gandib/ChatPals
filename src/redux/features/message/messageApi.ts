@@ -8,6 +8,7 @@ const messageApi = baseApi.injectEndpoints({
         url: `/message/mutual-chat`,
         method: "GET",
       }),
+      providesTags: ["message"],
     }),
   }),
 });
