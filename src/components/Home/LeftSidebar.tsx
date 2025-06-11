@@ -8,11 +8,8 @@ import { toast } from "sonner";
 import userApi from "../../redux/features/user/userApi";
 import type { TError } from "../../types";
 import messageApi from "../../redux/features/message/messageApi";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import {
-  getUserChat,
-  setUserChat,
-} from "../../redux/features/message/messageSlice";
+import { useAppDispatch } from "../../redux/hooks";
+import { setUserChat } from "../../redux/features/message/messageSlice";
 
 const data = [
   {
@@ -101,10 +98,10 @@ const LeftSidebar = () => {
   const [email, setEmail] = useState("");
   const debouncedEmail = useDebounce(email, 500);
   const dispatch = useAppDispatch();
-  const mutualUser = useAppSelector(getUserChat);
+  const isEmailValid = isValidEmail(debouncedEmail);
 
   const { data: userData, error } = userApi.useGetUserQuery(debouncedEmail, {
-    skip: !isValidEmail(debouncedEmail),
+    skip: !isEmailValid,
   });
 
   const { data: mutualConnections } = messageApi.useGetMutualConnectionsQuery(
@@ -113,11 +110,12 @@ const LeftSidebar = () => {
       refetchOnMountOrArgChange: true,
     }
   );
-  console.log(mutualConnections);
 
   useEffect(() => {
     dispatch(setUserChat(mutualConnections?.data?.connections[0]));
   }, [mutualConnections, dispatch]);
+
+  console.log(mutualConnections);
 
   if (error) {
     const errorMessage = String((error as TError).data?.message);

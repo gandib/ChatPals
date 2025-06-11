@@ -1,12 +1,11 @@
+import type { IUser } from "./user.type";
+
 export interface IMessage {
   _id: string;
   message: string;
-  sender: {
-    _id: string;
-    name: string;
-    email: string;
-    image: string;
-  };
+  sender: IUser;
+  receiver: IUser;
   roomId: string;
-  createdAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 }

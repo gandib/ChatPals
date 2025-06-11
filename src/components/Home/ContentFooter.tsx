@@ -1,5 +1,5 @@
 import { PictureOutlined, SendOutlined } from "@ant-design/icons";
-import { Input } from "antd";
+import { Button, Input } from "antd";
 
 const ContentFooter = ({
   setText,
@@ -30,13 +30,13 @@ const ContentFooter = ({
         />
       </div>
 
-      <div className="w-[15%] ml-4">
+      <Button disabled={!text} className="w-[15%] ml-4 mx-4" size="large">
         <SendOutlined
           onClick={() => sendMessage()}
           size={48}
           className="cursor-pointer"
         />
-      </div>
+      </Button>
     </div>
   );
 };

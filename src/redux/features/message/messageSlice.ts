@@ -21,7 +21,9 @@ const messageSlice = createSlice({
     },
     setChat: (state, action) => {
       if (state.userChat) {
-        console.log(action.payload);
+        if (!Array.isArray(state.userChat.chats)) {
+          state.userChat.chats = [];
+        }
         state.userChat.chats = [...state.userChat.chats, action.payload];
       }
     },

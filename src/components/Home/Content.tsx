@@ -20,8 +20,6 @@ const Content = () => {
   const mutualUser = useAppSelector(getUserChat);
   const receiver = useAppSelector(getReceiverUser) || mutualUser;
   const roomId = [user?._id, receiver?._id].sort().join("_");
-  // const roomId = "6846e79b55e3e0d3e3b07ef6_6846e887b56514124cc9fe44";
-  // console.log(roomId);
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [text, setText] = useState("");
   const dispatch = useAppDispatch();
@@ -30,8 +28,6 @@ const Content = () => {
     if (!user && !receiver) return;
 
     const roomId = [user?._id, receiver?._id].sort().join("_");
-    // const roomId = "6846e79b55e3e0d3e3b07ef6_6846e887b56514124cc9fe44";
-    console.log(roomId);
     socket.emit("joinRoom", roomId);
 
     const getMessages = async () => {
