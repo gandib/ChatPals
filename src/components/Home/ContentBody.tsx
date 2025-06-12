@@ -81,13 +81,15 @@ const ContentBody = ({
                     )}
 
                     {/* Show message if exists */}
-                    {chat.message && (
-                      <p className="break-words">{chat.message}</p>
-                    )}
+                    <div className="flex justify-between">
+                      {chat.message && (
+                        <p className="break-words">{chat.message}</p>
+                      )}
 
-                    <span className="text-[10px] text-gray-200 text-right">
-                      {moment(chat.createdAt).format("h:mm A")}
-                    </span>
+                      <p className="text-[10px] text-gray-200 text-right flex items-end ml-4 min-w-[40px]">
+                        {moment(chat.createdAt).format("h:mm A")}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
