@@ -1,9 +1,12 @@
 import { Avatar } from "antd";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { setReceiverUser } from "../../redux/features/user/userSlice";
 import type { TUserChat } from "../../types";
 import moment from "moment";
-import { setUserChat } from "../../redux/features/message/messageSlice";
+import {
+  getUserChat,
+  setUserChat,
+} from "../../redux/features/message/messageSlice";
 
 const ChatList = ({ data }: { data: TUserChat }) => {
   const dispatch = useAppDispatch();
@@ -12,6 +15,23 @@ const ChatList = ({ data }: { data: TUserChat }) => {
     dispatch(setReceiverUser(data));
     dispatch(setUserChat(data));
   };
+  const mutualUser = useAppSelector(getUserChat);
+  const connectedUser = mutualUser.filter((user) => user._id === data._id);
+
+  let lastMessage: string | null = null;
+
+  if (
+    connectedUser.length > 0 &&
+    Array.isArray(connectedUser[0].chats) &&
+    connectedUser[0].chats.length > 0
+  ) {
+    lastMessage =
+      connectedUser[0].chats[connectedUser[0].chats.length - 1]?.message ??
+      null;
+  } else if (Array.isArray(data?.chats) && data.chats.length > 0) {
+    lastMessage = data.chats[data.chats.length - 1]?.message ?? null;
+  }
+
   return (
     <div
       onClick={handlerUser}
@@ -24,12 +44,14 @@ const ChatList = ({ data }: { data: TUserChat }) => {
         <h2 className="text-base font-semibold text-gray-700">{data?.name}</h2>
         <div className="flex gap-2 justify-between text-xs text-gray-500">
           <p>
-            {data &&
-              data?.chats &&
-              data?.chats[data?.chats?.length - 1]?.message!.slice(0, 30)}{" "}
-            {data?.chats[data?.chats?.length - 1]?.message!.length > 30
-              ? "..."
-              : ""}
+            {lastMessage ? (
+              <>
+                {lastMessage.slice(0, 30)}
+                {lastMessage.length > 30 ? "..." : ""}
+              </>
+            ) : (
+              <span className="text-gray-400 italic">No message</span>
+            )}
           </p>
           <p>
             ~{" "}

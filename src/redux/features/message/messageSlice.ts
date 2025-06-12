@@ -19,9 +19,9 @@ const messageSlice = createSlice({
     setUserChat: (state, action: PayloadAction<TUserChat>) => {
       if (!action.payload) return;
 
-      const roomId = action.payload?.chats?.[0]?.roomId;
-      const alreadyExists = state.userChat.some(
-        (userChat) => userChat?.chats?.[0]?.roomId === roomId
+      const roomId = action.payload?.chats?.[0]?.roomId.split("-");
+      const alreadyExists = state.userChat.some((userChat) =>
+        roomId.find((roomUserId) => roomUserId === userChat?._id)
       );
 
       if (!alreadyExists) {
