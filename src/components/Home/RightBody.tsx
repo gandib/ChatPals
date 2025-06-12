@@ -1,11 +1,17 @@
 import { getUserChat } from "../../redux/features/message/messageSlice";
+import { getReceiverUser } from "../../redux/features/user/userSlice";
 import { useAppSelector } from "../../redux/hooks";
 
 const RightBody = () => {
   const userChat = useAppSelector(getUserChat);
+  const receiver = useAppSelector(getReceiverUser);
 
   // Extract all non-null chat images
-  const chatImages = userChat?.chats?.filter((chat) => chat.image) ?? [];
+  const chatImages = receiver?._id
+    ? userChat
+        .filter((user) => user._id === receiver?._id)[0]
+        ?.chats?.filter((chat) => chat.image) ?? []
+    : userChat[0]?.chats?.filter((chat) => chat.image) ?? [];
 
   return (
     <div>

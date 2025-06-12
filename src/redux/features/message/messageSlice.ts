@@ -1,14 +1,14 @@
 import type { TChat, TUserChat } from "../../../types";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../../type";
 
 type TMessageState = {
-  userChat: TUserChat | null;
+  userChat: TUserChat[];
   chats: TChat[];
 };
 
 const initialState: TMessageState = {
-  userChat: null,
+  userChat: [],
   chats: [],
 };
 
@@ -16,15 +16,29 @@ const messageSlice = createSlice({
   name: "message",
   initialState,
   reducers: {
-    setUserChat: (state, action) => {
-      state.userChat = action.payload;
+    setUserChat: (state, action: PayloadAction<TUserChat>) => {
+      if (!action.payload) return;
+
+      const roomId = action.payload?.chats?.[0]?.roomId;
+      const alreadyExists = state.userChat.some(
+        (userChat) => userChat?.chats?.[0]?.roomId === roomId
+      );
+
+      if (!alreadyExists) {
+        state.userChat.push(action.payload);
+      }
     },
-    setChat: (state, action) => {
-      if (state.userChat) {
-        if (!Array.isArray(state.userChat.chats)) {
-          state.userChat.chats = [];
-        }
-        state.userChat.chats = [...state.userChat.chats, action.payload];
+
+    setChat: (state, action: PayloadAction<TChat>) => {
+      if (!action.payload) return;
+
+      const { roomId } = action.payload;
+      const chatGroup = state.userChat.find(
+        (group) => group.chats?.[0]?.roomId === roomId
+      );
+
+      if (chatGroup) {
+        chatGroup.chats.push(action.payload);
       }
     },
   },

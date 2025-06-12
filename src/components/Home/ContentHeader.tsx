@@ -12,13 +12,13 @@ const ContentHeader = () => {
       <div className="w-[8%] ">
         <Avatar
           shape="square"
-          src={userData?.image || mutualUser?.image}
+          src={userData?.image || mutualUser[0]?.image}
           size={48}
         />
       </div>
       <div className="w-[90%]  mr-4">
         <h2 className="text-lg font-semibold text-gray-700">
-          {userData?.name || mutualUser?.name}
+          {userData?.name || mutualUser[0]?.name}
         </h2>
         <div className="text-xs text-gray-500">
           <p>Active</p>

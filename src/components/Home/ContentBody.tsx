@@ -3,6 +3,7 @@ import { useAppSelector } from "../../redux/hooks";
 import { getUserChat } from "../../redux/features/message/messageSlice";
 import { selectCurrentUser } from "../../redux/features/auth/authSlice";
 import moment from "moment";
+import { getReceiverUser } from "../../redux/features/user/userSlice";
 
 const ContentBody = ({
   imageFile,
@@ -13,6 +14,7 @@ const ContentBody = ({
 }) => {
   const chatData = useAppSelector(getUserChat);
   const currentUser = useAppSelector(selectCurrentUser);
+  const receiver = useAppSelector(getReceiverUser);
 
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
@@ -21,7 +23,7 @@ const ContentBody = ({
     if (bottomRef.current) {
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [chatData]);
+  }, [receiver, chatData]);
 
   const isNewDate = (currDate: string, prevDate: string | null) => {
     return !prevDate || !moment(currDate).isSame(prevDate, "day");
@@ -29,9 +31,13 @@ const ContentBody = ({
 
   let lastDate: string | null = null;
 
+  const filteredChatData = receiver
+    ? chatData?.filter((user) => user._id === receiver._id)[0]
+    : chatData[0];
+
   return (
     <div className="bg-blue-100 h-[67vh] p-4 overflow-y-auto space-y-3">
-      {chatData?.chats
+      {filteredChatData?.chats
         ?.filter((chat): chat is typeof chat => !!chat)
         .map((chat) => {
           const isSender = chat.sender?._id === currentUser?._id;

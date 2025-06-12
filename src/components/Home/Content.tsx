@@ -18,7 +18,7 @@ import messageApi from "../../redux/features/message/messageApi";
 const Content = () => {
   const user = useAppSelector(selectCurrentUser);
   const mutualUser = useAppSelector(getUserChat);
-  const receiver = useAppSelector(getReceiverUser) || mutualUser;
+  const receiver = useAppSelector(getReceiverUser) || mutualUser[0];
   const roomId = [user?._id, receiver?._id].sort().join("_");
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [text, setText] = useState("");
