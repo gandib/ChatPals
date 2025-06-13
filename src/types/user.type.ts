@@ -59,6 +59,7 @@ export type TChat = {
   roomId: string;
   sender: IUser;
   receiver: IUser;
+  readBy: string[];
   createdAt: Date;
   updatedAt: Date;
 };

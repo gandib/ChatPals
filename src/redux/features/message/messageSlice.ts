@@ -19,13 +19,23 @@ const messageSlice = createSlice({
     setUserChat: (state, action: PayloadAction<TUserChat>) => {
       if (!action.payload) return;
 
-      const roomId = action.payload?.chats?.[0]?.roomId.split("-");
-      const alreadyExists = state.userChat.some((userChat) =>
-        roomId.find((roomUserId) => roomUserId === userChat?._id)
+      const incomingRoomId = action.payload.chats?.[0]?.roomId;
+
+      const alreadyExists = state.userChat.some(
+        (userChat) => userChat.chats?.[0]?.roomId === incomingRoomId
       );
 
+      console.log(action.payload);
+
       if (!alreadyExists) {
-        state.userChat.push(action.payload);
+        if (
+          state.userChat.length > 0 &&
+          state.userChat[state.userChat.length - 1]._id === action.payload._id
+        ) {
+          state.userChat[state.userChat.length - 1] = action.payload;
+        } else {
+          state.userChat.push(action.payload);
+        }
       }
     },
 
@@ -37,14 +47,44 @@ const messageSlice = createSlice({
         (group) => group.chats?.[0]?.roomId === roomId
       );
 
+      console.log(chatGroup);
+
       if (chatGroup) {
         chatGroup.chats.push(action.payload);
       }
     },
+
+    updateReadBy: (
+      state,
+      action: PayloadAction<{ senderId: string; receiverId: string }>
+    ) => {
+      const { senderId, receiverId } = action.payload;
+
+      const chatGroup = state.userChat.find((group) => group._id === senderId);
+
+      if (!chatGroup) {
+        console.warn("No chat group found for senderId:", senderId);
+        return;
+      }
+
+      chatGroup?.chats.forEach((chat) => {
+        const chatReceiverId = chat.receiver?._id ?? chat.receiver;
+
+        if (
+          chatReceiverId === receiverId &&
+          !chat.readBy.includes(receiverId)
+        ) {
+          if (!Array.isArray(chat.readBy)) {
+            chat.readBy = [];
+          }
+          chat.readBy.push(receiverId);
+        }
+      });
+    },
   },
 });
 
-export const { setUserChat, setChat } = messageSlice.actions;
+export const { setUserChat, setChat, updateReadBy } = messageSlice.actions;
 
 export default messageSlice.reducer;
 

@@ -6,6 +6,7 @@ export interface IMessage {
   sender: IUser;
   receiver: IUser;
   roomId: string;
+  readBy: string[];
   createdAt: Date;
   updatedAt: Date;
 }

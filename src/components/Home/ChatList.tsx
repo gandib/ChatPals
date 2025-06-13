@@ -13,6 +13,7 @@ const ChatList = ({ data }: { data: TUserChat }) => {
 
   const handlerUser = () => {
     dispatch(setReceiverUser(data));
+    console.log(data);
     dispatch(setUserChat(data));
   };
   const mutualUser = useAppSelector(getUserChat);
@@ -59,7 +60,7 @@ const ChatList = ({ data }: { data: TUserChat }) => {
               data &&
                 data?.chats &&
                 data?.chats[data?.chats?.length - 1]?.updatedAt
-            ).toNow(true)}
+            ).format("h:mm A")}
           </p>
         </div>
       </div>
