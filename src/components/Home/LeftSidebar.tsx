@@ -112,7 +112,9 @@ const LeftSidebar = () => {
   );
 
   useEffect(() => {
-    dispatch(setUserChat(mutualConnections?.data?.connections[0]));
+    mutualConnections?.data?.connections.map((user: any) => {
+      dispatch(setUserChat(user));
+    });
   }, [mutualConnections, dispatch]);
 
   console.log(mutualConnections);

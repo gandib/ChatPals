@@ -6,18 +6,31 @@ import moment from "moment";
 import {
   getUserChat,
   setUserChat,
+  updateReadBy,
 } from "../../redux/features/message/messageSlice";
+import { selectCurrentUser } from "../../redux/features/auth/authSlice";
 
 const ChatList = ({ data }: { data: TUserChat }) => {
   const dispatch = useAppDispatch();
+  const mutualUser = useAppSelector(getUserChat);
+  const connectedUser = mutualUser.filter((user) => user._id === data._id);
+  const currentUser = useAppSelector(selectCurrentUser);
+
+  const currentChat = mutualUser.find((user) => user._id === data._id) || data;
+  const lastChat = currentChat?.chats?.[currentChat.chats.length - 1];
+  const unReadMessage = !lastChat.readBy.includes(currentUser?._id as string);
 
   const handlerUser = () => {
     dispatch(setReceiverUser(data));
     console.log(data);
     dispatch(setUserChat(data));
+    dispatch(
+      updateReadBy({
+        senderId: data?.chats[data?.chats?.length - 1].sender._id,
+        receiverId: data?.chats[data?.chats?.length - 1].receiver._id,
+      })
+    );
   };
-  const mutualUser = useAppSelector(getUserChat);
-  const connectedUser = mutualUser.filter((user) => user._id === data._id);
 
   let lastMessage: string | null = null;
 
@@ -43,8 +56,14 @@ const ChatList = ({ data }: { data: TUserChat }) => {
       </div>
       <div className="w-[85%]  mr-4">
         <h2 className="text-base font-semibold text-gray-700">{data?.name}</h2>
-        <div className="flex gap-2 justify-between text-xs text-gray-500">
-          <p>
+        <div
+          className={`flex ${
+            unReadMessage ? "text-blue-400" : ""
+          } gap-2 justify-between text-xs text-gray-500`}
+        >
+          <p
+            className={`${unReadMessage ? "text-gray-900 font-semibold" : ""}`}
+          >
             {lastMessage ? (
               <>
                 {lastMessage.slice(0, 30)}

@@ -81,7 +81,13 @@ const Content = () => {
     }
   }, [messages, dispatch]);
 
-  console.log(messages);
+  // console.log(messages);
+
+  useEffect(() => {
+    if (roomId && socket) {
+      socket.emit("markAsRead", { roomId: roomId, userId: user?._id });
+    }
+  }, [roomId, user]);
 
   return (
     <div>
