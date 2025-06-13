@@ -117,8 +117,6 @@ const LeftSidebar = () => {
     });
   }, [mutualConnections, dispatch]);
 
-  console.log(mutualConnections);
-
   if (error) {
     const errorMessage = String((error as TError).data?.message);
     toast.error(errorMessage);

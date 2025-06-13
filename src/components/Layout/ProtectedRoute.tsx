@@ -14,7 +14,6 @@ const ProtectedRoute = ({ children, role }: TProtectedRoute) => {
   //   }
   //   console.log(token, role, authUser);
   if (role !== "user" && role !== "admin") {
-    console.log("object1");
     return <Navigate to={"/login"} replace={true} />;
   }
 

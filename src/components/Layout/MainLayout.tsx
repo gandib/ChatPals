@@ -26,7 +26,6 @@ const MainLayout = () => {
   //   fetchUser();
   // }, [location.pathname]);
 
-  console.log(user);
   const items1: MenuProps["items"] = [
     {
       key: "Home",

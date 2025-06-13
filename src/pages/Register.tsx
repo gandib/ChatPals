@@ -22,8 +22,6 @@ const Register = () => {
       image: " ",
     };
 
-    console.log(data);
-
     formData.append("data", JSON.stringify(userData));
 
     formData.append("file", imageFiles[0]);

@@ -22,7 +22,6 @@ const ChatList = ({ data }: { data: TUserChat }) => {
 
   const handlerUser = () => {
     dispatch(setReceiverUser(data));
-    console.log(data);
     dispatch(setUserChat(data));
     dispatch(
       updateReadBy({

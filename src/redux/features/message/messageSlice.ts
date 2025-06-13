@@ -25,8 +25,6 @@ const messageSlice = createSlice({
         (userChat) => userChat.chats?.[0]?.roomId === incomingRoomId
       );
 
-      console.log(action.payload);
-
       if (!alreadyExists) {
         if (
           state.userChat.length > 0 &&
@@ -46,8 +44,6 @@ const messageSlice = createSlice({
       const chatGroup = state.userChat.find(
         (group) => group.chats?.[0]?.roomId === roomId
       );
-
-      console.log(chatGroup);
 
       if (chatGroup) {
         chatGroup.chats.push(action.payload);

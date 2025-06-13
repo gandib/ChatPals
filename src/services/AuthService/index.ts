@@ -8,7 +8,6 @@ import type { IUser } from "../../types";
 
 export const registerUser = async (userData: FieldValues) => {
   try {
-    console.log({ userData });
     const { data } = await axiosInstance.post("/auth/signup", userData, {
       withCredentials: true,
     });
