@@ -4,12 +4,12 @@ import type { RootState } from "../../type";
 
 type TMessageState = {
   userChat: TUserChat[];
-  chats: TChat[];
+  isChatOpen: boolean;
 };
 
 const initialState: TMessageState = {
   userChat: [],
-  chats: [],
+  isChatOpen: false,
 };
 
 const messageSlice = createSlice({
@@ -77,11 +77,17 @@ const messageSlice = createSlice({
         }
       });
     },
+
+    setChatOpen: (state, action) => {
+      state.isChatOpen = action.payload;
+    },
   },
 });
 
-export const { setUserChat, setChat, updateReadBy } = messageSlice.actions;
+export const { setUserChat, setChat, updateReadBy, setChatOpen } =
+  messageSlice.actions;
 
 export default messageSlice.reducer;
 
 export const getUserChat = (state: RootState) => state.message.userChat;
+export const isChatOpen = (state: RootState) => state.message.isChatOpen;

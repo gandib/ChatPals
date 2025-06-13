@@ -5,6 +5,7 @@ import type { TUserChat } from "../../types";
 import moment from "moment";
 import {
   getUserChat,
+  setChatOpen,
   setUserChat,
   updateReadBy,
 } from "../../redux/features/message/messageSlice";
@@ -29,6 +30,8 @@ const ChatList = ({ data }: { data: TUserChat }) => {
         receiverId: data?.chats[data?.chats?.length - 1].receiver._id,
       })
     );
+
+    dispatch(setChatOpen(true));
   };
 
   let lastMessage: string | null = null;

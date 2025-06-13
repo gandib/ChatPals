@@ -16,7 +16,7 @@ const ContentHeader = () => {
           size={48}
         />
       </div>
-      <div className="w-[90%]  mr-4">
+      <div className="w-[90%]  mx-4">
         <h2 className="text-lg font-semibold text-gray-700">
           {userData?.name || mutualUser[0]?.name}
         </h2>
