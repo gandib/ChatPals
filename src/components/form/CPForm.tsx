@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Form } from "antd";
-import { type ReactNode } from "react";
+import { type ReactNode, useEffect } from "react";
 import {
   type FieldValues,
   FormProvider,
   type SubmitHandler,
   useForm,
+  type UseFormReturn,
 } from "react-hook-form";
 
 type TFormConfig = {
@@ -16,6 +17,7 @@ type TFormConfig = {
 type TFormProps = {
   onSubmit: SubmitHandler<FieldValues>;
   children: ReactNode;
+  methodsRef?: (methods: UseFormReturn<FieldValues>) => void;
 } & TFormConfig;
 
 const CPForm = ({
@@ -23,6 +25,7 @@ const CPForm = ({
   children,
   defaultValues,
   resolver,
+  methodsRef,
 }: TFormProps) => {
   const formConfig: TFormConfig = {};
 
@@ -36,15 +39,15 @@ const CPForm = ({
 
   const methods = useForm(formConfig);
 
-  const submit = (data: FieldValues) => {
-    onSubmit(data);
-    // methods.reset();
-  };
+  useEffect(() => {
+    if (methodsRef) {
+      methodsRef(methods);
+    }
+  }, [methods, methodsRef]);
 
   return (
     <FormProvider {...methods}>
-      <Form layout="vertical" onFinish={methods.handleSubmit(submit)}>
-        <Form.Item></Form.Item>
+      <Form layout="vertical" onFinish={methods.handleSubmit(onSubmit)}>
         {children}
       </Form>
     </FormProvider>

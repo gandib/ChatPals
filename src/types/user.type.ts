@@ -1,4 +1,5 @@
 import type { BaseQueryApi } from "@reduxjs/toolkit/query";
+import type { ChangeEventHandler } from "react";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IUser {
@@ -63,3 +64,16 @@ export type TChat = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export interface IInput {
+  varient?: "borderless" | "underlined" | "outlined" | "filled";
+
+  size?: "small" | "middle" | "large";
+  required?: boolean;
+  type?: string;
+  label: string;
+  name: string;
+  disabled?: boolean;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
+  value?: any;
+}

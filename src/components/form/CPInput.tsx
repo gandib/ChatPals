@@ -7,7 +7,6 @@ type TInputProps = {
   label?: string;
   disabled?: boolean;
   required?: boolean;
-  defaultValue?: string | number | readonly string[] | undefined;
   placeholder?: string;
 };
 
@@ -17,29 +16,23 @@ const CPInput = ({
   label,
   disabled,
   required,
-  defaultValue,
   placeholder,
 }: TInputProps) => {
   return (
     <div style={{ marginBottom: "20px" }}>
       <Controller
         name={name}
+        rules={{
+          required: required ? `Please input your ${name}` : false,
+        }}
         render={({ field, fieldState: { error } }) => (
-          <Form.Item
-            label={label}
-            name={name}
-            required={required}
-            rules={[
-              { required: required, message: `Please input your ${name}!` },
-            ]}
-          >
+          <Form.Item label={label} validateStatus={error ? "error" : ""}>
             <Input
               {...field}
               type={type}
               id={name}
               size="large"
               disabled={disabled}
-              defaultValue={defaultValue}
               placeholder={placeholder}
             />
             {error && <small style={{ color: "red" }}>{error.message}</small>}

@@ -4,7 +4,10 @@ import { Link, Outlet, useNavigate } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { logout, selectCurrentUser } from "../../redux/features/auth/authSlice";
 import { baseApi } from "../../redux/api/baseApi";
-import { setChatOpen } from "../../redux/features/message/messageSlice";
+import {
+  resetMessageState,
+  setChatOpen,
+} from "../../redux/features/message/messageSlice";
 const { Content } = Layout;
 
 const MainLayout = () => {
@@ -15,6 +18,7 @@ const MainLayout = () => {
   const handleLogout = () => {
     dispatch(logout());
     dispatch(baseApi.util.resetApiState());
+    dispatch(resetMessageState());
     navigate("/login");
   };
 

@@ -81,11 +81,18 @@ const messageSlice = createSlice({
     setChatOpen: (state, action) => {
       state.isChatOpen = action.payload;
     },
+
+    resetMessageState: () => initialState,
   },
 });
 
-export const { setUserChat, setChat, updateReadBy, setChatOpen } =
-  messageSlice.actions;
+export const {
+  setUserChat,
+  setChat,
+  updateReadBy,
+  setChatOpen,
+  resetMessageState,
+} = messageSlice.actions;
 
 export default messageSlice.reducer;
 

@@ -58,12 +58,7 @@ const Register = () => {
   return (
     <Row justify="center" align="middle" style={{ height: "100vh" }}>
       <Col span={20}>
-        <h1
-          style={{
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
+        <h1 className="flex justify-center text-2xl font-bold mb-4">
           Register
         </h1>
         <CPForm onSubmit={onSubmit}>
