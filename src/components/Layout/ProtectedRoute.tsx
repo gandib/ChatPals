@@ -1,41 +1,29 @@
 import { type ReactNode } from "react";
-import { Navigate } from "react-router";
+import { Navigate, useLocation } from "react-router";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { baseApi } from "../../redux/api/baseApi";
+import { selectCurrentUser } from "../../redux/features/auth/authSlice";
 
 type TProtectedRoute = {
   children: ReactNode;
-  role: string | undefined;
+  role?: string;
 };
 
 const ProtectedRoute = ({ children, role }: TProtectedRoute) => {
-  //   let user;
+  const dispatch = useAppDispatch();
+  const location = useLocation();
+  const user = useAppSelector(selectCurrentUser);
 
-  //   if (token) {
-  //     user = verifyToken(token);
-  //   }
-  //   console.log(token, role, authUser);
-  if (role !== "user" && role !== "admin") {
-    return <Navigate to={"/login"} replace={true} />;
+  if (!user) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  //   if (role !== undefined && role !== (user as TUser)?.role) {
-  //     console.log("object");
-  //     // dispatch(logout());
-  //     dispatch(baseApi.util.resetApiState());
-  //     return (
-  //       <Navigate
-  //         to={"/unauthorized"}
-  //         state={location?.pathname}
-  //         replace={true}
-  //       />
-  //     );
-  //   }
+  if (role && user?.role !== role) {
+    dispatch(baseApi.util.resetApiState());
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
 
-  // if (!token) {
-  //   console.log("object2");
-  //   return <Navigate to={"/login"} replace={true} />;
-  // }
-
-  return children;
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;

@@ -37,16 +37,24 @@ const MainLayout = () => {
         </Link>
       ),
     },
-    {
-      key: "Dashboard",
-      label: (
-        <Link to={`${user?.role}/dashboard`}>
-          <AppstoreTwoTone
-            style={{ fontSize: "28px", marginRight: "2px", paddingTop: "16px" }}
-          />
-        </Link>
-      ),
-    },
+    ...(user
+      ? [
+          {
+            key: "Dashboard",
+            label: (
+              <Link to={`${user?.role}/dashboard`}>
+                <AppstoreTwoTone
+                  style={{
+                    fontSize: "28px",
+                    marginRight: "2px",
+                    paddingTop: "16px",
+                  }}
+                />
+              </Link>
+            ),
+          },
+        ]
+      : []),
   ];
 
   return (
