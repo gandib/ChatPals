@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AppstoreTwoTone, MessageTwoTone } from "@ant-design/icons";
 import { type MenuProps, Button, Layout, Menu } from "antd";
 import { Link, Outlet, useNavigate } from "react-router";
