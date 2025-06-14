@@ -17,6 +17,17 @@ const userApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+
+    updateUser: builder.mutation({
+      query: (userInfo) => {
+        console.log(userInfo);
+        return {
+          url: `/auth/update-user?id=${userInfo.id}`,
+          method: "PATCH",
+          body: userInfo.data,
+        };
+      },
+    }),
   }),
 });
 

@@ -11,13 +11,12 @@ import type { IUser } from "../types";
 import { verifyToken } from "../utils/verifyToken";
 import { setUser } from "../redux/features/auth/authSlice";
 import { useState } from "react";
-import { useForgetPassword } from "../hooks/auth.hooks";
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [login] = authApi.useLoginMutation();
-  const { mutate: handleForgetPassword } = useForgetPassword();
+  const [handleForgetPassword] = authApi.useForgetPasswordMutation();
   const [error, setError] = useState("");
 
   let formMethods: UseFormReturn<FieldValues>;
@@ -37,16 +36,22 @@ const Login = () => {
     }
   };
 
-  const recoverPassword = (email: string) => {
+  const recoverPassword = async (email: string) => {
     const data = { email };
-    console.log(email);
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
     if (!regex.test(email)) {
       setError("Please enter a valid email!");
     } else {
       setError("");
-      handleForgetPassword(data);
+
+      const toastId = toast.loading("Forget password link generating...");
+      try {
+        const res = await handleForgetPassword(data).unwrap();
+        toast.success(res.message, { id: toastId });
+      } catch (error: any) {
+        toast.error(error?.data?.message, { id: toastId });
+      }
     }
   };
 

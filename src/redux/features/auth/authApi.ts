@@ -17,6 +17,22 @@ const authApi = baseApi.injectEndpoints({
         body: userInfo,
       }),
     }),
+
+    forgetPassword: builder.mutation({
+      query: (userInfo) => ({
+        url: "/auth/forget-password",
+        method: "POST",
+        body: userInfo,
+      }),
+    }),
+
+    recoverPassword: builder.mutation({
+      query: (userInfo) => ({
+        url: "/auth/reset-password",
+        method: "POST",
+        body: userInfo,
+      }),
+    }),
   }),
 });
 
