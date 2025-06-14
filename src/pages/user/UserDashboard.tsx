@@ -1,7 +1,7 @@
-import { Card, Avatar, Button, Descriptions } from "antd";
-import { EditOutlined } from "@ant-design/icons";
+import { Card, Avatar, Descriptions } from "antd";
 import { useAppSelector } from "../../redux/hooks";
 import { selectCurrentUser } from "../../redux/features/auth/authSlice";
+import EditProfileModal from "../../components/EditProfileModal";
 
 const UserDashboard = () => {
   const user = useAppSelector(selectCurrentUser);
@@ -15,11 +15,7 @@ const UserDashboard = () => {
       <Card
         className="rounded-2xl shadow-lg min-h-[90vh] flex flex-col"
         style={{ padding: "2rem", flex: 1 }}
-        extra={
-          <Button type="primary" icon={<EditOutlined />}>
-            Edit Profile
-          </Button>
-        }
+        extra={<EditProfileModal />}
       >
         <div className="flex flex-col md:flex-row items-center md:items-start gap-6 flex-1">
           <Avatar

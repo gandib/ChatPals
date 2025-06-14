@@ -2,8 +2,7 @@ import { Layout, Menu } from "antd";
 
 const { Sider } = Layout;
 import { useAppSelector } from "../../redux/hooks";
-import { selectCurrentToken } from "../../redux/features/auth/authSlice";
-import { verifyToken } from "../../utils/verifyToken";
+import { selectCurrentUser } from "../../redux/features/auth/authSlice";
 import type { IUser } from "../../types";
 import { sidebarItemsGenerator } from "../../utils/sidebarItemsGenerator";
 import { userPaths } from "../../routes/user.routes";
@@ -15,17 +14,11 @@ const userRole = {
 };
 
 const Sidebar = () => {
-  const token = useAppSelector(selectCurrentToken);
-
-  let user;
-
-  if (token) {
-    user = verifyToken(token);
-  }
+  const user = useAppSelector(selectCurrentUser);
 
   let sidebarItems;
 
-  switch ((user as IUser)!.role) {
+  switch ((user as IUser)?.role) {
     case userRole.ADMIN:
       sidebarItems = sidebarItemsGenerator(adminPaths, userRole.ADMIN);
       break;

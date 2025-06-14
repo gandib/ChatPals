@@ -6,7 +6,7 @@ const ErrorPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   let error = "";
-  console.log(location);
+
   if (
     location?.state?.split("/")[1] === "admin" ||
     location?.state?.split("/")[1] === "user"
