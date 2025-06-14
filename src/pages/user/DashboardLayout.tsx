@@ -1,13 +1,13 @@
 import { Button, Layout } from "antd";
 const { Header, Content } = Layout;
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router";
+import Sidebar from "./Sidebar";
 import { useAppDispatch } from "../../redux/hooks";
 import { logout } from "../../redux/features/auth/authSlice";
 import { baseApi } from "../../redux/api/baseApi";
 import { HomeOutlined } from "@ant-design/icons";
-import Sidebar from "../../pages/user/Sidebar";
 
-const DashboardLayout = () => {
+const UserDashboard = () => {
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {
@@ -27,13 +27,15 @@ const DashboardLayout = () => {
         >
           <div>
             <Link to="/">
-              <span className="text-white hover:text-blue-400 flex items-center text-[16px] transition-colors duration-300">
-                <HomeOutlined className="text-[20px] mr-1" />
+              <span style={{ color: "white" }}>
+                {" "}
+                <HomeOutlined
+                  style={{ fontSize: "20px", marginRight: "2px" }}
+                />
                 Home
               </span>
             </Link>
           </div>
-
           <Button onClick={handleLogout}>Logout</Button>
         </Header>
         <Content style={{ margin: "24px 16px 0" }}>
@@ -51,4 +53,4 @@ const DashboardLayout = () => {
   );
 };
 
-export default DashboardLayout;
+export default UserDashboard;
