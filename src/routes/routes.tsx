@@ -7,11 +7,13 @@ import { routesGenerator } from "../utils/routesGenerator";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
 import DashboardLayout from "../components/Layout/DashboardLayout";
+import ErrorPage from "../pages/ErrorPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
