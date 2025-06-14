@@ -8,6 +8,7 @@ import Register from "../pages/Register";
 import Login from "../pages/Login";
 import DashboardLayout from "../components/Layout/DashboardLayout";
 import ErrorPage from "../pages/ErrorPage";
+import RecoverPassword from "../pages/RecoverPassword";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "/recover-password",
+        element: <RecoverPassword />,
       },
     ],
   },

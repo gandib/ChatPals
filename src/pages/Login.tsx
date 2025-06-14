@@ -95,7 +95,6 @@ const Login = () => {
               span={24}
               style={{ display: "flex", justifyContent: "center" }}
             >
-              {/* <Row gutter={[16, 16]}> */}
               <Col span={24} md={{ span: 12 }} lg={{ span: 12 }}>
                 <CPInput
                   type="text"
