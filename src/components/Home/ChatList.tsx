@@ -17,9 +17,9 @@ const ChatList = ({ data }: { data: TUserChat }) => {
   const connectedUser = mutualUser.filter((user) => user._id === data._id);
   const currentUser = useAppSelector(selectCurrentUser);
 
-  const currentChat = mutualUser.find((user) => user._id === data._id) || data;
+  const currentChat = mutualUser?.find((user) => user._id === data._id) || data;
   const lastChat = currentChat?.chats?.[currentChat.chats.length - 1];
-  const unReadMessage = !lastChat.readBy.includes(currentUser?._id as string);
+  const unReadMessage = !lastChat?.readBy?.includes(currentUser?._id as string);
 
   const handlerUser = () => {
     dispatch(setReceiverUser(data));

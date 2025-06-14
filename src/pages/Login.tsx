@@ -56,14 +56,14 @@ const Login = () => {
         <h1 className="mb-4 flex justify-center text-2xl font-bold">Login</h1>
 
         <div className="flex p-2 justify-center">
-          <p className="font-bold">Credentials:</p>
+          <p className="font-bold flex items-center text-lg">Credentials:</p>
           <Button
             onClick={() => {
               formMethods?.setValue("email", "jasmine@gmail.com");
               formMethods?.setValue("password", "123456");
             }}
-            size="small"
-            className="mx-2 bg-primary-500 text-white"
+            size="middle"
+            className="mx-2 bg-primary-500 text-white "
           >
             User A
           </Button>
@@ -72,7 +72,7 @@ const Login = () => {
               formMethods?.setValue("email", "marie@gmail.com");
               formMethods?.setValue("password", "123456");
             }}
-            size="small"
+            size="middle"
             className="mr-2 bg-secondary-500 text-white"
           >
             User B
@@ -132,7 +132,7 @@ const Login = () => {
                 </div>
 
                 <h4 style={{ marginBottom: "15px" }}>
-                  New to Sports Smart Booking?{" "}
+                  New to ChatPals?{" "}
                   <span style={{ color: "green" }}>
                     <Link to="/register">Register</Link>
                   </span>
