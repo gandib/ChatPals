@@ -60,18 +60,32 @@ const ContentBody = ({
                   </span>
                 </div>
               )}
-
               {/* Message Bubble */}
               <div
-                className={`flex ${isSender ? "justify-end" : "justify-start"}`}
+                className={`flex ${
+                  isSender ? "justify-end" : "justify-start"
+                } px-3`}
               >
                 <div
-                  className={`px-4 py-2 mb-2 max-w-[70%] rounded-lg text-white ${
-                    isSender ? "bg-blue-600" : "bg-gray-500"
+                  className={`relative mb-3 max-w-[70%] px-4 py-2 text-white ${
+                    isSender
+                      ? "bg-blue-600 rounded-tl-lg rounded-bl-lg rounded-br-lg"
+                      : "bg-gray-600 rounded-tr-lg rounded-br-lg rounded-bl-lg"
                   }`}
                 >
-                  <div className="flex flex-col gap-1">
-                    {/* Show image if exists */}
+                  {/* Tail */}
+                  <div
+                    className={`absolute top-0 ${
+                      isSender ? "right-0" : "left-0"
+                    } w-4 h-4 bg-blue-600 z-10 ${
+                      isSender
+                        ? "translate-x-2 -translate-y-2 rotate-45"
+                        : "-translate-x-2 -translate-y-2 rotate-45 bg-gray-600"
+                    }`}
+                    style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }}
+                  ></div>
+
+                  <div className="flex flex-col gap-2">
                     {chat.image && (
                       <img
                         src={chat.image}
@@ -80,13 +94,12 @@ const ContentBody = ({
                       />
                     )}
 
-                    {/* Show message if exists */}
-                    <div className="flex justify-between">
+                    <div className="flex justify-between items-end gap-2">
                       {chat.message && (
                         <p className="break-words">{chat.message}</p>
                       )}
 
-                      <p className="text-[10px] text-gray-200 text-right flex items-end ml-4 min-w-[40px]">
+                      <p className="text-[10px] text-gray-300 min-w-[40px] text-right">
                         {moment(chat.createdAt).format("h:mm A")}
                       </p>
                     </div>
