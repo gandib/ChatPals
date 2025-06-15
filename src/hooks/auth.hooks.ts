@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { type FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 import {
@@ -15,10 +15,10 @@ export const useUserRegistration = () => {
   return useMutation<any, Error, FieldValues>({
     mutationKey: ["USER_REGISTRATION"],
     mutationFn: async (userData) => await registerUser(userData),
-    onSuccess(data, variables, context) {
+    onSuccess(data, _variables, _context) {
       toast.success(data.message);
     },
-    onError(error, variables, context) {
+    onError(error, _variables, _context) {
       toast.error(error.message);
     },
   });
@@ -28,18 +28,16 @@ export const useUserlogin = () => {
   return useMutation<any, Error, FieldValues>({
     mutationKey: ["USER_LOGIN"],
     mutationFn: async (userData) => await loginUser(userData),
-    onSuccess(data, variables, context) {
+    onSuccess(data, _variables, _context) {
       toast.success(data.message);
     },
-    onError(error, variables, context) {
+    onError(error, _variables, _context) {
       toast.error(error.message);
     },
   });
 };
 
 export const useCurrentUser = () => {
-  const queryClient = useQueryClient();
-
   return useMutation({
     mutationKey: ["USER"],
     mutationFn: async () => await getCurrentUser(),
@@ -50,10 +48,10 @@ export const useForgetPassword = () => {
   return useMutation<any, Error, FieldValues>({
     mutationKey: ["USER_LOGIN"],
     mutationFn: async (userData) => await forgetPassword(userData),
-    onSuccess(data, variables, context) {
+    onSuccess(data, _variables, _context) {
       toast.success(data.message);
     },
-    onError(error, variables, context) {
+    onError(error, _variables, _context) {
       toast.error(error.message);
     },
   });
@@ -63,10 +61,10 @@ export const useRecoverPassword = () => {
   return useMutation<any, Error, FieldValues>({
     mutationKey: ["USER_LOGIN"],
     mutationFn: async (userData) => await recoverPassword(userData),
-    onSuccess(data, variables, context) {
+    onSuccess(data, _variables, _context) {
       toast.success(data.message);
     },
-    onError(error, variables, context) {
+    onError(error, _variables, _context) {
       toast.error(error.message);
     },
   });

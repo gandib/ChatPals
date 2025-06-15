@@ -31,7 +31,7 @@ const CPSelectWithWatch = ({
 
   useEffect(() => {
     onValueChange(inputValue);
-  }, [inputValue]);
+  }, [inputValue, onValueChange]);
   return (
     <Controller
       name={name}
