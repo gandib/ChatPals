@@ -4,6 +4,10 @@
 
 A comprehensive ChatPals built with Vite, TypeScript, AntDesign, Redux, Socket.io, Tailwind CSS and some required packages. This web app allows users to chat multiple friends with realtime and with responsive design.
 
+## Live URL
+
+- [Live URL](https://chat-pals.vercel.app)
+
 ## Features
 
 - **Home Page:** Browse and search users by email to create mutual chat connections.
