@@ -90,7 +90,7 @@ const MainLayout = () => {
               border: 0,
             }}
           />
-          <div>
+          <div className="mx-4">
             {user && user.email ? (
               <Button
                 onClick={handleLogout}
