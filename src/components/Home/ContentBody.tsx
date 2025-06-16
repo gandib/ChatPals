@@ -1,6 +1,9 @@
 import { useEffect, useRef } from "react";
-import { useAppSelector } from "../../redux/hooks";
-import { getUserChat } from "../../redux/features/message/messageSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import {
+  getUserChat,
+  updateReadBy,
+} from "../../redux/features/message/messageSlice";
 import { selectCurrentUser } from "../../redux/features/auth/authSlice";
 import moment from "moment";
 import { getReceiverUser } from "../../redux/features/user/userSlice";
@@ -15,6 +18,7 @@ const ContentBody = ({
   const chatData = useAppSelector(getUserChat);
   const currentUser = useAppSelector(selectCurrentUser);
   const receiver = useAppSelector(getReceiverUser);
+  const dispatch = useAppDispatch();
 
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
@@ -36,7 +40,19 @@ const ContentBody = ({
     : chatData[0];
 
   return (
-    <div className="bg-blue-100 h-[67vh] p-4 overflow-y-auto space-y-3">
+    <div
+      onMouseLeave={() => {
+        dispatch(
+          updateReadBy({
+            senderId: (receiver?._id as string)
+              ? (receiver?._id as string)
+              : chatData[0]?.chats[chatData[0]?.chats?.length - 1].sender?._id,
+            receiverId: currentUser?._id as string,
+          })
+        );
+      }}
+      className="bg-blue-100 h-[67vh] p-4 overflow-y-auto space-y-3"
+    >
       {filteredChatData?.chats
         ?.filter((chat): chat is typeof chat => !!chat)
         .map((chat) => {
